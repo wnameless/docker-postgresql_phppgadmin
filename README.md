@@ -1,7 +1,7 @@
 docker-postgresql_phppgadmin
 ============================
 
-postgresql + phpPgAdmin
+postgresql(default encoding: UTF-8) + phpPgAdmin
 
 ```
 docker pull wnameless/postgresql-phppgadmin

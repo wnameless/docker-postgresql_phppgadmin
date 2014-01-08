@@ -29,6 +29,19 @@ RUN apt-get install -y postgresql; \
 RUN sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/9.1/main/postgresql.conf
 RUN echo 'host all all 0.0.0.0/0 md5' >> /etc/postgresql/9.1/main/pg_hba.conf
 
+RUN apt-get install -y postgresql-contrib
+
+# Set postgresql default encoding to UTF-8
+RUN echo "UPDATE pg_database SET datistemplate=FALSE WHERE datname='template1';" > utf8.sql; \
+	echo "DROP DATABASE template1;" >> utf8.sql; \
+	echo "CREATE DATABASE template1 WITH owner=postgres template=template0 encoding='UTF8';" >> utf8.sql; \
+	echo "UPDATE pg_database SET datistemplate=TRUE WHERE datname='template1';" >> utf8.sql
+
+RUN service postgresql start; \
+	export PGPASSWORD=postgres; \
+	psql -U postgres -h localhost -a -f utf8.sql; \
+	rm utf8.sql
+
 # Install Apache
 RUN apt-get install -y apache2
 # Install php
