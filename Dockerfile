@@ -9,9 +9,10 @@ RUN apt-get update
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 
-# Install expect & passwd.sh
+# Install expect
 RUN apt-get install -y expect
 
+# Set password to 'admin'
 RUN echo '#!/usr/bin/expect -f' > passwd.sh; \
 	echo "spawn passwd" >> passwd.sh; \
 	echo "expect {" >> passwd.sh; \
